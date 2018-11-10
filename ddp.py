@@ -1,5 +1,5 @@
 import logging
-
+import numpy as np
 import time
 import cv2
 import base64
@@ -44,12 +44,13 @@ def infer(image, model='mobilenet_thin', resize='368x368', resize_out_ratio=4.0)
 inferred = infer(posed)
 original = cv2.imread(posed)
 
-timeout_demo = time.time() + 2
-while True:
-    cv2.imshow('original', original)
-    if time.time() > timeout_demo:
-        break
+# timeout_demo = time.time() + 5
+# while True:
+#     cv2.imshow('original', original)
+#     if time.time() > timeout_demo:
+#         break
 
+time.sleep(5)
 if original.shape[0] != 480 or original.shape[1] != 640:
       original = cv2.resize(original, (368, 368))
 inferred = inferred - original
