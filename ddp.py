@@ -53,12 +53,14 @@ while True:
 if original.shape[0] != 480 or original.shape[1] != 640:
       original = cv2.resize(original, (368, 368))
 inferred = inferred - original
+inferred=cv2.copyMakeBorder(inferred[:,int(np.nonzero(inferred)[1][0]/2):],0,0,0,int(np.nonzero(inferred)[1][0]/2),cv2.BORDER_REPLICATE)
 # while True:
 #   cv2.imshow('image', inferred)
 #   if cv2.waitKey(1) & 0xFF == ord('q'):
 #     break
 timeout = time.time() + 10
 capture = cv2.VideoCapture(0)
+
 x = 1
 while True:
   ret, frame = capture.read()
