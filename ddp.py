@@ -40,7 +40,7 @@ def infer(image, model='mobilenet_thin', resize='368x368', resize_out_ratio=4.0)
     return image
 
 
-def teach_step(posed = 'Images/yoga.jpg'):
+def teach_step(posed = 'Images/yoga.jpg',Check=False):
     Estimator = TfPoseEstimator
     frame1 = np.zeros((768, 1024, 3), np.uint8)
 
@@ -51,12 +51,15 @@ def teach_step(posed = 'Images/yoga.jpg'):
     inferred = infer(posed)
     original = cv2.imread(posed)
 
-    time.sleep(5)
+    #time.sleep(5)
     if original.shape[0] != 480 or original.shape[1] != 640:
          original = cv2.resize(original, (368, 368))
+    
+    if Check:
+         cv2.imwrite('check.jpg', inferred)
 
     inferred = inferred - original
-    inferred=cv2.copyMakeBorder(inferred[:,int(np.nonzero(inferred)[1][0]/2):],0,0,0,int(np.nonzero(inferred)[1][0]/2),cv2.BORDER_REPLICATE)
+    #inferred=cv2.copyMakeBorder(inferred[:,int(np.nonzero(inferred)[1][0]/2):],0,0,0,int(np.nonzero(inferred)[1][0]/2),cv2.BORDER_REPLICATE)
 
     timeout = time.time() + 10
     capture = cv2.VideoCapture(0)
@@ -125,10 +128,10 @@ def teach_step(posed = 'Images/yoga.jpg'):
 
     print('')
     print('')
-    print(1-np.sum(total)/np.size(total))
+    print('Overlap:'+str((1-np.sum(total)/np.size(total))*10))
 
 
 poses=glob.glob('./Images/*')
 posNo=random.randint(0,len(poses)-1)
 print(poses[posNo])
-teach_step(poses[posNo])
+teach_step('./Images/Sricharan1.jpg',Check=True)
